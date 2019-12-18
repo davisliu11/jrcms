@@ -9,14 +9,29 @@ $(".dropdown-menu input").keyup(function(e){
     }
 });
 
-$('#updateButton').click(function() {
+var saveContentPeriodically = function(){
+    saveContent();
+    setTimeout(saveContentPeriodically, 2000);
+  };
+setTimeout(saveContentPeriodically, 2000);
+
+var lastSavedContentKey;
+var lastSavedContentValue;
+function saveContent() {
+    var contentKey = $('#contentKey').text().trim();
+    var contentValue = $('#contentValue').val();
+    if (lastSavedContentKey == contentKey && lastSavedContentValue == contentValue) {
+        return;
+    }
+    lastSavedContentKey = contentKey;
+    lastSavedContentValue = contentValue;
     $.ajax({
         url: '/content',
         type: 'PUT',
-        data: {'contentValue' : $('#contentValue').val(), 'contentKey': $('#contentKey').text().trim()}
+        data: {'contentValue' : contentValue, 'contentKey': contentKey}
       });
     console.log("update button clicked.")
-});
+};
 
 function loadContent(item) {
     $('#contentKey').text(item);
