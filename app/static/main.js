@@ -9,14 +9,17 @@ $(".dropdown-menu input").keyup(function(e){
     }
 });
 
-$('#updateButton').click(function() {
+$("#contentValue").keyup(function(e){
+    saveContent()
+});
+
+function saveContent() {
     $.ajax({
         url: '/content',
         type: 'PUT',
         data: {'contentValue' : $('#contentValue').val(), 'contentKey': $('#contentKey').text().trim()}
       });
-    console.log("update button clicked.")
-});
+}
 
 function loadContent(item) {
     $('#contentKey').text(item);
