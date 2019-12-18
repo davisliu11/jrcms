@@ -9,7 +9,7 @@ $(".dropdown-menu input").keyup(function(e){
     }
 });
 
-$('#updateButton').click(function() {
+$("#contentValue").keyup(function(e){
     $.ajax({
         url: '/content',
         type: 'PUT',
