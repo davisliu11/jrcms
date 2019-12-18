@@ -9,15 +9,26 @@ $(".dropdown-menu input").keyup(function(e){
     }
 });
 
-$("#contentValue").keyup(function(e){
-    saveContent()
-});
+var saveContentPeriodically = function(){
+    saveContent();
+    setTimeout(saveContentPeriodically, 1000);
+  };
+setTimeout(saveContentPeriodically, 1000);
 
+var lastSavedContentKey;
+var lastSavedContentValue;
 function saveContent() {
+    var contentKey = $('#contentKey').text().trim();
+    var contentValue = $('#contentValue').val();
+    if (lastSavedContentKey == contentKey && lastSavedContentValue == contentValue) {
+        return;
+    }
+    lastSavedContentKey = contentKey;
+    lastSavedContentValue = contentValue;
     $.ajax({
         url: '/content',
         type: 'PUT',
-        data: {'contentValue' : $('#contentValue').val(), 'contentKey': $('#contentKey').text().trim()}
+        data: {'contentValue' : contentValue, 'contentKey': contentKey}
       });
 }
 
