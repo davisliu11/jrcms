@@ -3,6 +3,8 @@ WORKDIR /app
 COPY app .
 RUN pip install -r requirements.txt
 
+RUN python -m unittest -v
+
 EXPOSE 8080
 ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["controller.py"]
