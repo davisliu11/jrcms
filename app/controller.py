@@ -40,8 +40,8 @@ def _internal_check(contentKey):
     if contentKey == "test_key":
         return
     import random
-    random.randint(1, 10) == 1
-    raise Exception("Cannot pass internal check")
+    if random.randint(1, 50) == 1:
+        raise Exception("Cannot pass internal check")
 
 if __name__ == '__main__':
     import os
