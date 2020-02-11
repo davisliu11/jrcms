@@ -1,13 +1,16 @@
+import prometheus_client as prometheus_client
 import flask
 
 from flask import Flask, request, render_template, Response, redirect
 from data import ContentManager
 from myutils import get_logger, get_limiter
+from metrics_utils import setup_metrics
 
 app = Flask(__name__)
 cm = ContentManager(app)
 logger = get_logger(app)
 limiter = get_limiter(app)
+setup_metrics(app)
 
 @app.route('/')
 def index():
@@ -42,6 +45,13 @@ def _internal_check(contentKey):
     import random
     if random.randint(1, 50) == 1:
         raise Exception("Cannot pass internal check")
+
+# The generate_latest() function generates the latest metrics and sets the content type to indicate the Prometheus
+# server that we are sending the metrics in text format using the 0.0.4 version.
+@app.route('/metrics/')
+def metrics():
+    CONTENT_TYPE_LATEST = str('text/plain; version=0.0.4; charset=utf-8')
+    return Response(prometheus_client.generate_latest(), mimetype=CONTENT_TYPE_LATEST)
 
 if __name__ == '__main__':
     import os
