@@ -1,4 +1,4 @@
-flask==1.0.2
+flask==2.3.2
 flask-redis==0.4.0
 json_logging==1.0.5
 flask_limiter==1.1.0
